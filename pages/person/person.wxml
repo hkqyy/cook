@@ -1,0 +1,58 @@
+<import src="../../component/dataList/dataList.wxml"/>
+
+<view class='container'>
+  <template is="dataList" data="{{...item}}"/>
+
+  <!--屏幕背景变暗的背景  -->
+<view class="commodity_screen" bindtap="hideSelectList" wx:if="{{showSelect}}"></view>
+<!--弹出框  -->
+<view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showSelect}}">
+  <view class="w100 ta-right" bindtap='hideSelectList'>
+     <icon class='w10 ta-center' type="clear" size="20" bindtap='hideSelectList'></icon>
+  </view>
+  <view class="table">
+    <scroll-view scroll-y="true">
+      <block wx:for="{{selectObjList}}" wx:key="this">
+          <view class="tr">
+          <view data-index='{{index}}' class="td w10" bindtap='removeSelect'>
+            <icon class='w100 ta-center' type="cancel" size="20"></icon>
+          </view>
+          <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item}}</text></view>
+        </view>
+      </block>
+    </scroll-view>  
+  </view>
+
+</view>
+
+<view class='pay-wrap' wx:if="{{from != ''}}">
+  <view class='cart-pay'>
+      <view class='select' bindtap='showSelectList'>
+        <image src="../../images/person_cnt.png"></image>
+        <text class="badge badge-animation" wx:if="{{selectObjList.length>0}}">{{selectObjList.length}}</text>
+      </view>
+      <view class='pay-btn' bindtap='backToPreView'>选好了</view>
+  </view>
+</view>
+
+</view> 
+
+<!--弹窗-->
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+  <view class="modal-title">人员明细</view>
+    <view class="modal-content">
+      <view class="modal-input">
+        <input placeholder-class="input-holder" type="text" maxlength="20" class="input"
+        data-name="name" placeholder="姓名" value='{{name}}' bindblur='inputChange' ></input>
+      </view>
+      <view class="modal-input">
+        <input placeholder-class="input-holder" type='number' maxlength='11' class="input" 
+         data-name="phone" placeholder="手机" value='{{phone}}' bindblur='inputChange' ></input>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+      <view class="btn-confirm" bindtap="{{action}}" data-status="cancel">提交</view>
+    </view>
+</view>

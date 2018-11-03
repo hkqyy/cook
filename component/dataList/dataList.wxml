@@ -1,0 +1,55 @@
+<!-- 自定义toast组件 -->
+
+<template name="dataList"> 
+  <view class="search">
+    <view class="search-left">
+        <image src="../../images/search.png"></image>
+        <input placeholder-class="search-placeholder"
+          data-name='searchText' placeholder='请输入名称' bindinput='searchTextChange'/>
+    </view>
+    <view class="search-right" bindtap="{{searchMethod}}">
+      <image src="../../images/lighting.png"></image>
+    </view>
+    <view class="add-right" bindtap="{{addMethod}}">
+      <image src="../../images/add.png"></image>
+    </view>
+  </view>
+
+  <view class='data_box'>
+    <view class='data_left'>
+        <scroll-view scroll-y style='width:100%;height:100%;' scroll-with-animation scroll-into-view='{{firstLetter}}'>
+            <view>
+              <block wx:for='{{dataList}}' wx:key='this' wx:for-item='letterItem' wx:for-index='letterIndex'>
+                <view class='first_letter' id='{{letterItem.letter}}'>{{letterItem.letter}}</view>
+
+                <view class="{{item.select == 'S' ? 'data_item_gray' : 'data_item'}}"
+                  wx:for="{{letterItem.data}}" wx:for-item="item" wx:key="this">
+                    <view class='data' bindtouchstart="touchS" bindtouchmove="touchM"
+                    data-index='{{index}}' data-letter='{{letterItem.letter}}' data-display='{{item.display}}'
+                      data-val='{{item}}'  bindtap='{{clickMethod}}'>
+                      <block wx:for='{{rowList}}' wx:key='this' wx:for-item='rowItem'>
+                        <view class='row'>
+                          <block wx:for='{{rowItem}}' wx:key='this' wx:for-item='row'>
+                            <view wx:if="{{rowItem.length == 1}}" class="w100"> {{row.name}}{{item[row.property]}}</view>
+                            <view wx:else class="w50"> {{row.name}}{{item[row.property]}}</view>
+                          </block>  
+                        </view>
+                      </block>    
+                    </view>
+
+                    <view data-index="{{index}}" bindtap = "{{delMethod}}" data-letter='{{letterItem.letter}}' 
+                    data-id='{{item._id}}' class="del" style='display:{{item.display}}'>删除
+                    </view>
+                </view>
+
+              </block>
+            </view>
+        </scroll-view>
+    </view>
+    <view class='data_right'>
+      <text class='letter_item' wx:for='{{letterList}}' wx:key='this' catchtap='letterTap' data-item='{{item}}'>
+        {{item}}
+      </text>
+    </view>
+   </view> 
+</template> 

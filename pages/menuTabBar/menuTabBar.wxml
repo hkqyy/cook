@@ -1,0 +1,35 @@
+<import src="../../component/dataList/dataList.wxml"/>
+
+<view class='container'>
+  <template is="dataList" data="{{...item}}"/>
+
+  <!--弹窗-->
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+  <view class="modal-dialog" wx:if="{{showModal}}">
+    <view class="modal-title">菜单明细</view>
+    <form bindsubmit="{{action}}">
+      <view class="modal-content">
+        <input hidden="true" type='hidden'  name="_id" value='{{_id}}'></input>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="text" maxlength="20" class="input"
+          name="name" placeholder="名称" value='{{name}}'></input>
+        </view>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="text" maxlength="10" class="input" 
+          name="unit" placeholder="单位" value='{{unit}}'></input>
+        </view>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="digit" maxlength="13" class="input"
+          name="price" placeholder="单价" value='{{price}}'></input>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+        <view class="btn-confirm">
+          <button formType="submit">提交</button>
+        </view>
+      </view>
+    </form>
+  </view>
+
+</view>

@@ -1,0 +1,11 @@
+
+.btn-confirm button{
+  height: 100%;
+  width: 100%;
+  color: #2A8CE5;
+  text-align: center;
+  line-height: 86rpx;
+  font-size: 34rpx;
+  border: 0;
+}
+

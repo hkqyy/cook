@@ -1,0 +1,51 @@
+{
+	"cloud": true,
+	"pages": [
+		"pages/index/index",
+    "pages/menuTabBar/menuTabBar",
+    "pages/order/order",
+		"pages/orderAdd/orderAdd",
+    "pages/template/template",
+    "pages/templateAdd/templateAdd",
+    "pages/menuList/menuList",
+    "pages/person/person",
+    "pages/user/user"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#159ee7",
+		"navigationBarTitleText": "洪家小厨",
+		"navigationBarTextStyle": "white"
+	},
+	"tabBar": {
+		"color": "#000",
+		"selectedColor": "#33B9FF",
+		"position": "bottom",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "images/home.png",
+				"selectedIconPath": "images/home1.png"
+			},
+			{
+				"pagePath": "pages/menuTabBar/menuTabBar",
+				"text": "菜品",
+				"iconPath": "images/menu.png",
+				"selectedIconPath": "images/menu1.png"
+			},
+			{
+				"pagePath": "pages/order/order",
+				"text": "订单",
+				"iconPath": "images/order.png",
+				"selectedIconPath": "images/order1.png"
+			},
+      {
+        "pagePath": "pages/user/user",
+        "text": "个人",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my1.png"
+      }
+		]
+	}
+}

@@ -1,0 +1,74 @@
+<view class="container">
+  <view class="search">
+      <view class="search-left">
+          <image src="../../images/search.png"></image>
+          <input placeholder-class="search-placeholder"
+            data-name='searchText' placeholder='请输入姓名或者手机号' bindblur='inputChange'/>
+      </view>
+      <view class="search-right" bindtap="search">
+          <image src="../../images/lighting.png"></image>
+      </view>
+  </view>
+
+	<view class="filter-tab sort-tab">
+			<text bindtap="setSortBy" data-sortindex="{{index}}" data-sortid="{{item.id}}" class="{{sortindex==index?'active':''}}" 
+      wx:for="{{sort}}" wx:key="{{item.id}}">{{item.title}}</text>
+	</view>
+
+  <!-- <scroll-view class="container-body" scroll-y="true" scroll-top="{{scrolltop}}" bindscroll="scrollHandle"  -->
+	<scroll-view class="container-body" scroll-y="true"
+    lower-threshold="50" bindscrolltolower="scrollLoading" >
+		<view class="conference-list">
+			<view class="conference-item" wx:for="{{orderList}}" wx:key="{{item._id}}" wx:for-item="item">
+				<view class="conference-item-head">
+          <text>{{item.date}}</text>
+					<text class="status yellow" wx:if="{{item.status == 1}}">待收款</text>
+          <text class="status blue" wx:else>已完成</text>
+				</view>
+				<view class="conference-item-info">
+					<view class="item-info">姓名: {{item.name}}</view>
+					<view class="item-info">手机: {{item.phone}}</view>
+				</view>
+        <view class="conference-item-info">
+					<view class="item-info">订单金额: ¥{{item.orderAmount}}</view>
+					<view class="item-info">收款金额: ¥{{item.actualAmount}}</view>
+				</view>
+
+        <view class="conference-item-btn" wx:if="{{item.status == 1}}">
+					<view class="left-btn" bindtap='edit' data-val='{{item}}'>编辑</view>
+					<view class="right-btn" bindtap='amount' data-id="{{item._id}}" data-actualamount="{{item.actualAmount}}" 
+          data-orderamount="{{item.orderAmount}}" data-index="{{index}}">收款</view>
+				</view>
+        <view class="conference-item-btn" wx:else>
+         <view class="right-btn" bindtap='edit' data-val='{{item}}'>查看</view>
+        </view>
+			</view>
+		</view>
+
+	</scroll-view>
+
+  <view class="no-data" style='display:{{display}}'>没有更多数据了</view>
+
+  <!-- <view class="container-footer {{scrolltop>200?'gototopactive':'gototopnone'}}" catchtap='goToTop'>
+    <image class="container-footer-img" src='../../images/up.png'></image>   
+  </view> -->
+  
+  <!--弹窗-->
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+  <view class="modal-dialog" wx:if="{{showModal}}">
+    <view class="modal-title">收款</view>
+      <view class="modal-content">
+        <view class="modal-input">
+          <text>金额：</text>
+          <input placeholder-class="input-holder" type="digit" maxlength="13" class="input"
+            data-name="actualAmount" placeholder="请输入收款金额" bindinput='inputChange' 
+            value='{{oldActualAmount}}'></input>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+        <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+      </view>
+  </view>
+
+</view>

@@ -1,0 +1,145 @@
+page {
+  background-color: #f8f8f8;
+}
+
+.new-add {
+  background-color: #fff;
+}
+
+.new-add-list {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.new-add-list text {
+  width: 26%;
+}
+
+.new-add-list input {
+  padding-right: 126rpx;
+}
+
+.new-add-list image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.new-add-list .add-api {
+  display: flex;
+  align-items: center;
+  width: 74%;
+  justify-content: space-between;
+}
+
+.new-add-list .add-api textarea {
+  width: 500rpx;
+  height: 80rpx;
+}
+
+.add-btn-item {
+  width: 100%;
+  display: flex;
+  /* align-items: center; */
+  padding: 20rpx;
+  flex-direction: row;
+  font-size: 36rpx;
+}
+
+.new-add-list:last-child {
+  justify-content: space-between;
+}
+
+.new-add-list .switch-btn {
+  color: #00a0e9;
+}
+
+.table {
+  width: 95%;
+  margin-left: 20rpx;
+  margin-top: 1rem;
+}
+
+.tr {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  height: 2.5rem;
+  align-items: center;
+}
+
+.td-input {
+  height: 1.8rem;
+  width: 95%;
+  border: 1px solid #ddd;
+  border-radius: 10rpx;
+  text-align: center;
+}
+
+.td {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.th {
+  color: #fff;
+  display: flex;
+  height: 3rem;
+  align-items: center;
+}
+
+.bg-w {
+  background: #afb4db;
+}
+
+.bg-g {
+  background: #e6f3f9;
+}
+
+.bg-g2 {
+  background: #fff;
+}
+
+.submit-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #fff;
+  height: 90rpx;
+}
+
+.submit-btn {
+  width: 180rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  color: #fff;
+  background-color: #fc8517;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.add-btn {
+  width: 180rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  color: #fff;
+  background-color: #00a0e9;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.container-body{
+  margin-bottom: 100rpx;
+}
+
+.add-image {
+  /* width: 150rpx; */
+  height: 60rpx;
+  float: right;
+  padding: 10rpx;
+  color: #00a0e9;
+  margin-right: 10rpx;
+}

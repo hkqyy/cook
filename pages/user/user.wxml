@@ -1,0 +1,37 @@
+<!-- header -->
+<view class='user-head'>
+  <image src='../../images/bg_02.jpg' class='mine-bg'></image>
+  <view class='user-head-pic-wrap'>
+    <block wx:if="{{!login}}">
+      <text class='un-login'>用户未登录，请授权登录</text>
+    </block>
+    <block wx:else>
+      <image src='{{userInfo.avatarUrl}}' class='user-head-pic'></image>
+      <text class='user-name'>{{userInfo.nickName}}</text>
+    </block>
+  </view>
+</view>
+
+<view class='option-cont'>
+  <view class='option-list' bindtap='setting'>
+      <view class='left-list'>
+        <image src='../../images/user.png'></image>
+        <text class='option-name'>我的设置</text>
+      </view>
+      <view class='right-list'>
+        <image src='../../images/xiangyou.png'></image>
+      </view>
+  </view>
+  <!-- <navigator url='/pages/address/address' hover-class='none'> -->
+  <view class='option-list' bindtap='clearAllCache'>
+    <view class='left-list'>
+      <image src='../../images/lightning.png'></image>
+      <text class='option-name'>清除缓存</text>
+    </view>
+    <view class='right-list'>
+      <image src='../../images/xiangyou.png'></image>
+    </view>
+  </view>
+ <!-- </navigator> -->
+ <button wx:if="{{!login}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+</view>

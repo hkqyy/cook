@@ -1,0 +1,8 @@
+.del {
+  line-height: 120rpx;
+}
+
+.row {
+  height: 100rpx;
+  line-height: 100rpx;
+}

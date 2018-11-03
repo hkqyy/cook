@@ -1,0 +1,70 @@
+<scroll-view class="container-body" scroll-y="true">
+  <view class='new-add'>
+    <view class='new-add-list'>
+      <text>模板名称</text>
+      <input type='text' name='name' value="{{name}}" bindblur='nameChange'
+        placeholder='请输入模板名称'></input>
+    </view>
+    <view class='new-add-list'>
+      <text class='w20'>备注</text>
+      <input type='text' name='remark' value="{{remark}}" bindblur='remarkChange'
+         placeholder=''></input>
+    </view>
+    <view></view>
+  </view>
+
+  <!-- <view><image bindtap='addMenu' class="add-image" src='./../../images/add.png'></image></view -->
+  <view><text bindtap='addMenu' class="add-image">添加菜式</text></view>
+  <view class="table">
+    <view class="tr bg-w">
+      <view class="th w7"></view>
+      <view class="th w12"><text class='w100 ta-center'>序号</text></view>
+      <view class="th w25"><text class='w100 ta-center'>名称</text></view>
+      <view class="th w15"><text class='w100 ta-center'>单位</text></view>
+      <view class="th w20"><text class='w100 ta-center'>单价</text></view>
+      <view class="th w20"><text class='w100 ta-center'>数量</text></view>
+    </view>
+
+    <block wx:for="{{listData}}" wx:key="{{item._id}}" wx:for-item="item">
+      <view class="tr bg-g" wx:if="{{index % 2 == 0}}">
+        <view class="td w7" data-index='{{index}}' bindtap='delete'>
+          <icon class='w100 ta-center' type="cancel" size="20"></icon>
+        </view>
+        <view class="td w12" selectable="true"><text class='w100 ta-center'>{{index+1}}</text></view>
+        <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
+        <view class="td w15" selectable="true"><text class='w100 ta-center'>{{item.unit}}</text></view>
+        <view class="td w20" selectable="true">
+          <input type='number' maxlength='11' name='price' class='td-input'
+            data-id="{{index}}" value="{{item.price}}" bindblur='priceChange'></input>
+        </view>
+        <view class="td w20" selectable="true">
+          <input type='number' maxlength='11' name='count' class='td-input'
+            data-id="{{index}}" value="{{item.count}}" bindblur='cntChange'></input>
+        </view>
+      </view>
+      <view class="tr bg-g2" wx:else>
+        <view class="td w7" data-index='{{index}}' bindtap='delete'>
+          <icon class='w100 ta-center' type="cancel" size="20"></icon>
+        </view>
+        <view class="td w12" selectable="true"><text class='w100 ta-center'>{{index+1}}</text></view>
+        <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
+        <view class="td w15" selectable="true"><text class='w100 ta-center'>{{item.unit}}</text></view>
+        <view class="td w20" selectable="true">
+          <input type='number' maxlength='11' name='price' class='td-input'
+            data-id="{{index}}" value="{{item.price}}" bindblur='priceChange'></input>
+        </view>
+        <view class="td w20" selectable="true">
+          <input type='number' maxlength='11' name='count' class='td-input'
+            data-id="{{index}}" value="{{item.count}}" bindblur='cntChange'></input>
+        </view>
+      </view>
+    </block>
+  </view>
+</scroll-view>
+
+<view class='submit-item'>
+  <view>
+  </view>
+  <view class='submit-btn' bindtap='submit'>保存</view>
+</view>
+

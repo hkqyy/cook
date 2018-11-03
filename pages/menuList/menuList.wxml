@@ -1,0 +1,91 @@
+<import src="../../component/dataList/dataList.wxml"/>
+<view class='container'>
+  <template is="dataList" data="{{...item}}"/>
+
+<!--屏幕背景变暗的背景  -->
+<view class="commodity_screen" bindtap="hideSelectList" wx:if="{{showSelect}}"></view>
+<!--弹出框  -->
+<view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showSelect}}">
+  <view class="w100 ta-right">
+     <icon class='w10 ta-center' type="clear" size="20" bindtap='hideSelectList'></icon>
+  </view>
+  <view class="table">
+    <view class="tr">
+      <view class="th w7"></view>
+      <view class="th w25"><text class='w100 ta-center'>名称</text></view>
+      <view class="th w15"><text class='w100 ta-center'>单价</text></view>
+      <view class="th sub"></view>
+      <view class="th w12"><text class='w100 ta-center'>数量</text></view>
+      <view class="th add"></view>
+      <view class="th w20"><text class='w100 ta-center'>总价</text></view>
+    </view>
+    <scroll-view scroll-y="true">
+      <block wx:for="{{selectObjList}}" wx:key="this" wx:for-item="item">
+          <view class="tr">
+          <view data-index='{{index}}' class="td w7" bindtap='removeSelect'>
+            <icon class='w100 ta-center' type="cancel" size="20"></icon>
+          </view>
+          <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
+          <view class="td w15" selectable="true">
+            <input type='digit' maxlength='11' name='price' class='td-input'
+              data-index="{{index}}" value="{{item.price}}" bindblur='priceChange'></input>
+          </view>
+          <view class="td sub" data-index='{{index}}' data-count='{{item.count}}' bindtap='subtract'>
+            <text class='cnt-text'>-</text>
+          </view>
+          <view class="td w12" selectable="true">
+            <input type='digit' maxlength='11' name='count' class='td-input'
+              data-index="{{index}}" value="{{item.count}}" bindblur='cntChange'></input>
+          </view>
+          <view class="td add" data-index='{{index}}' data-count='{{item.count}}' bindtap='add'>
+            <text class='cnt-text'>+</text>
+          </view>
+          <view class="td w20" selectable="true"><text class='w100 ta-center'>{{item.sum}}</text></view>
+        </view>
+      
+      </block>
+    </scroll-view>  
+  </view>
+
+</view>
+  
+<view class='pay-wrap'>
+  <view class='cart-pay'>
+      <view class='select' bindtap='showSelectList'>
+        <image src="../../images/menu_cnt.png"></image>
+        <text class="badge badge-animation" wx:if="{{selectObjList.length>0}}">{{selectObjList.length}}</text>
+      </view>
+      <view class='pay-btn' bindtap='backToPreView'>选好了</view>
+  </view>
+</view>
+
+  <!--弹窗-->
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+  <view class="modal-dialog" wx:if="{{showModal}}">
+    <view class="modal-title">菜单明细</view>
+    <form bindsubmit="{{action}}">
+      <view class="modal-content">
+        <input hidden="true" type='hidden'  name="id" value='{{id}}'></input>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="text" maxlength="20" class="input"
+          name="name" placeholder="名称" value='{{name}}'></input>
+        </view>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="text" maxlength="10" class="input" 
+          name="unit" placeholder="单位" value='{{unit}}'></input>
+        </view>
+        <view class="modal-input">
+          <input placeholder-class="input-holder" type="digit" maxlength="13" class="input"
+          name="price" placeholder="单价" value='{{price}}'></input>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+        <view class="btn-confirm">
+          <button formType="submit">提交</button>
+        </view>
+      </view>
+    </form>
+  </view>
+
+</view>  
