@@ -77,8 +77,6 @@ let dataListTemp = {
       }
     }
 
-
- 
     var list = [];
     // 右侧首字母列表
     var letterList = [];

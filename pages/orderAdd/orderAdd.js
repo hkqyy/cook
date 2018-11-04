@@ -222,6 +222,7 @@ Page({
     } else {
       order.status = 2;
     }
+    order.createTime = common.formatTime(new Date())
     var orderCollection = app.getCollection("order");
     orderCollection.add({
       data: order

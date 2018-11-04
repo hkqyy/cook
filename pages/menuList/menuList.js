@@ -114,7 +114,7 @@ Page({
             icon: 'success',
             duration: 1000
           })
-          app.setCacheData("menuList", dataList);
+          app.setCacheData("menuList", sourceList);
           that.hideModal();
           submit = true;
         },
@@ -321,5 +321,54 @@ Page({
     this.setData({
       ["selectObjList[" + index + "]"]: item,
     });
+  },
+  //点击删除按钮事件
+  delItem: function (e) {
+    var index = e.target.dataset.index;
+    var letter = e.target.dataset.letter;
+    var _id = e.target.dataset.id;
+    var dataList = this.data.item.dataList;
+    var sourceList = this.data.sourceList;
+    var isDel = false;
+    var that = this;
+    wx.showModal({
+      title: '提示',
+      content: '是否确定删除?',
+      success: function (res) {
+        if (res.confirm) {
+          menuCollection.doc(_id).remove({
+            success: function (res) {
+              for (var i = 0; i < sourceList.length; i++) {
+                if (sourceList[i]._id == _id) {
+                  sourceList.splice(i, 1);
+                  break;
+                }
+              }
+              for (var i = 0; i < dataList.length; i++) {
+                if (dataList[i].letter == letter) {
+                  var arr = dataList[i].data;
+                  arr.splice(index, 1);
+                  isDel = true;
+                  break;
+                }
+              }
+              //更新列表的状态
+              if (isDel) {
+                that.setData({
+                  sourceList: sourceList,
+                  'item.dataList': dataList
+                });
+              }
+              wx.showToast({
+                title: '删除成功',
+                icon: 'success',
+                duration: 1000
+              })
+              app.setCacheData("menuList", sourceList);
+            }
+          })
+        }
+      }
+    })
   },
 })

@@ -45,9 +45,10 @@
 			</view>
 		</view>
 
+    <view class="no-data" style='display:{{display}}'>没有更多数据了</view>
 	</scroll-view>
 
-  <view class="no-data" style='display:{{display}}'>没有更多数据了</view>
+  
 
   <!-- <view class="container-footer {{scrolltop>200?'gototopactive':'gototopnone'}}" catchtap='goToTop'>
     <image class="container-footer-img" src='../../images/up.png'></image>   

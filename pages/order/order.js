@@ -61,9 +61,9 @@ Page({
     if (where == undefined) {
       where = {};
     }
-    orderCollection.skip(page * pageSize).limit(pageSize).where(where).orderBy('date', 'desc').get()
-      .then(res => {
-        that.setData({
+    orderCollection.skip(page * pageSize).limit(pageSize).where(where).orderBy('date', 'desc').orderBy('createTime', 'desc')
+    .get().then(res => {
+          that.setData({
           orderList: this.data.orderList.concat(res.data)
         })
         wx.hideLoading();
@@ -90,6 +90,10 @@ Page({
       where.status = id;
     this.getOrderData(0, where);
     this.setTotalCount(where);
+    setTimeout(function() {
+      wx.hideLoading();
+    }, 1000);
+   
   },
   setStatusClass: function (e) { //设置状态颜色
     console.log(e);
@@ -106,12 +110,13 @@ Page({
   },
   scrollLoading: function () { //滚动加载
     if(scroll == true) {
+      console.log('scroll');
       scroll = false;
       if (this.data.orderList.length >= this.data.totalCnt) {
         this.setData({
           display: 'block'
         })
-        // scroll = true;
+        scroll = true;
         return;
       }
       wx.showLoading({
@@ -124,6 +129,10 @@ Page({
         page: this.data.page + 1,
       })
       this.getOrderData(this.data.page, where);
+      setTimeout(function () {
+        wx.hideLoading();
+      }, 1000);
+      scroll = true;
     }
   },
   onPullDownRefresh: function () { //下拉刷新
@@ -253,6 +262,9 @@ Page({
     } else {
       this.getOrderData(0, where);
     }
+    setTimeout(function () {
+      wx.hideLoading();
+    }, 1000);
   },
   setTotalCount: function(where) {
     var that = this;

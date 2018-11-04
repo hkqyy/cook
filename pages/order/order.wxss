@@ -17,7 +17,7 @@
 .conference-item{
 	padding: 10rpx;
 	border-bottom: 1rpx solid #e8e8e8;
-    font-size: 42rpx;
+  font-size: 36rpx;
 }
 .conference-item-head{
 	width: 100%;
@@ -57,7 +57,7 @@
 }
 
 .item-info {
-  width: 45%;
+  width: 50%;
   flex-direction: column;
 }
 

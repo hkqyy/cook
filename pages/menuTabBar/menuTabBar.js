@@ -34,9 +34,11 @@ Page({
   onLoad: function (options) {
     // 初始化数据列表模版对象
     new app.DataListTemp();
+  },
+  onShow: function() {
     var that = this;
     var sourceList = app.getCacheData("menuList");
-    if (sourceList != null ) {
+    if (sourceList != null) {
       var dataList = that.formatList(sourceList);
       this.setData({
         sourceList: sourceList,
