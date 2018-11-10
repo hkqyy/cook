@@ -44,11 +44,11 @@
     <view class="modal-content">
       <view class="modal-input">
         <input placeholder-class="input-holder" type="text" maxlength="20" class="input"
-        data-name="name" placeholder="姓名" value='{{name}}' bindblur='inputChange' ></input>
+        data-name="name" placeholder="姓名" value='{{name}}' bindinput='inputChange' ></input>
       </view>
       <view class="modal-input">
         <input placeholder-class="input-holder" type='number' maxlength='11' class="input" 
-         data-name="phone" placeholder="手机" value='{{phone}}' bindblur='inputChange' ></input>
+         data-name="phone" placeholder="手机" value='{{phone}}' bindinput='inputChange' ></input>
       </view>
     </view>
     <view class="modal-footer">

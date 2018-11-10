@@ -1,6 +1,7 @@
 // pages/newAdd/newAdd.js
 var common = require("../../utils/util.js");
 var app = getApp();
+var submit = true;
 
 Page({
 
@@ -23,7 +24,10 @@ Page({
     listData: [],
     action: 'submitOrder',
     status: 1,
-    item: ''
+    item: '',
+    share: 0,
+    detail: '',
+    scrolltop: 0
   },
 
 	/**
@@ -50,27 +54,33 @@ Page({
         status: item.status,
         item: item
       });
-      var where = { orderId: item._id };
-      var that = this;
-      wx.cloud.callFunction({
-        // 云函数名称
-        name: 'getAllData',
-        data: {
-          name: "orderDetail",
-          where: where,
-        }
-      }).then(res => {
-        var dataList = res.result.data;
-        var orderSum = 0;
-        for (var i in dataList) {
-          orderSum += Number(dataList[i].sum);
-        }
+      if (options.share != undefined) {
         this.setData({
-          listData: dataList,
-          orderAmount: orderSum
+          share: options.share
+        });
+        var dataList = JSON.parse(options.detail);
+        this.setData({
+          listData: dataList
         })
         wx.hideLoading();
-      }).catch(console.error)
+      } else {
+        var where = { orderId: item._id };
+        var that = this;
+        wx.cloud.callFunction({
+          // 云函数名称
+          name: 'getAllData',
+          data: {
+            name: "orderDetail",
+            where: where,
+          }
+        }).then(res => {
+          var dataList = res.result.data;
+          this.setData({
+            listData: dataList
+          })
+          wx.hideLoading();
+        }).catch(console.error)
+      }
     } else {
       this.setData({
         date: common.formatDate(new Date())
@@ -92,11 +102,21 @@ Page({
 
   //提交订单
   submitOrder: function () {
-    if(this.data.orderId != '') {
-      this.update();
-    } else {
-      this.add();
+    if(submit) {
+      submit = false;
+      wx.showLoading({
+        title: '数据保存中',
+      })
+      if (this.data.orderId != '') {
+        this.update();
+      } else {
+        this.add();
+      }
+      setTimeout(function() {
+        wx.hideLoading();
+      }, 2000);
     }
+   
   },
 	/**
 	 * 用户点击右上角分享
@@ -108,16 +128,17 @@ Page({
     }
     item.status = 2;
     var data = JSON.stringify(item);
+    var detail = JSON.stringify(this.data.listData);
     return {
       title: '菜单明细',
       desc: '菜单明细',
-      path: '/pages/orderAdd/orderAdd?item=' + data
+      path: '/pages/orderAdd/orderAdd?share=1&item=' + data + '&detail=' + detail
     }
   },
   priceChange: function (e) {
     var list = this.data.listData;
     var item = list[e.target.dataset.id];
-    item.price = e.detail.value;
+    item.price = Number(e.detail.value);
     var oldSum = item.sum;
     item.sum = (item.price * item.count).toFixed(2);
     var orderAmount = (Number(this.data.orderAmount) + Number(item.sum) - Number(oldSum)).toFixed(2);
@@ -129,7 +150,7 @@ Page({
   cntChange: function (e) {
     var list = this.data.listData;
     var item = list[e.target.dataset.id];
-    item.count = e.detail.value;
+    item.count = Number(e.detail.value);
     var oldSum = item.sum;
     item.sum = (item.price * item.count).toFixed(2);
     var orderAmount = (Number(this.data.orderAmount) + Number(item.sum) - Number(oldSum)).toFixed(2);
@@ -191,11 +212,7 @@ Page({
   inputChange: function (e) {
     var inputName = e.target.dataset.name;
     var data = {};
-    if (inputName == 'actualAmount') {
-      data[inputName] = Number(e.detail.value);
-    } else {
-      data[inputName] = e.detail.value;
-    }
+    data[inputName] = e.detail.value;
     
     this.setData(data);
   },
@@ -209,13 +226,12 @@ Page({
     order.person = this.data.person;
     order.address = this.data.address;
     order.remark = this.data.remark;
-    order.orderAmount = this.data.orderAmount;
-    // if (this.data.actualAmount == '') {
-    //   order.actualAmount = 0;
-    // } else {
-    //   order.actualAmount = this.data.actualAmount;
-    // }
-    order.actualAmount = this.data.actualAmount;
+    order.orderAmount = Number(this.data.orderAmount);
+    if (this.data.actualAmount == '') {
+      order.actualAmount = 0;
+    } else {
+      order.actualAmount = Number(this.data.actualAmount);
+    }
     // 1待付款 2已完成
     if (order.actualAmount < order.orderAmount || order.orderAmount == 0) {
       order.status = 1;
@@ -228,6 +244,7 @@ Page({
       data: order
     })
       .then(res => {
+        submit = true;
         var orderId = res._id;
         var menuList = that.data.listData;
         var orderDetailList = [];
@@ -265,8 +282,9 @@ Page({
         }, 1000);
         var amountSum = app.getCacheData("amountSum");
         if (amountSum != null) {
-          amountSum.orderAmountSum = Number(amountSum.orderAmountSum) + Number(order.orderAmount);
-          amountSum.actualAmountSum = Number(amountSum.actualAmountSum) + Number(order.actualAmount);
+          amountSum.orderAmountSum = (Number(amountSum.orderAmountSum) + Number(order.orderAmount) - 
+                    Number(order.actualAmount)).toFixed(2);
+          amountSum.actualAmountSum = (Number(amountSum.actualAmountSum) + Number(order.actualAmount)).toFixed(2);
           app.setCacheData("amountSum", amountSum);
         }
       }).catch(console.error)
@@ -281,8 +299,12 @@ Page({
     order.person = this.data.person;
     order.address = this.data.address;
     order.remark = this.data.remark;
-    order.orderAmount = this.data.orderAmount;
-    order.actualAmount = this.data.actualAmount;
+    order.orderAmount = Number(this.data.orderAmount);
+    if (this.data.actualAmount == '') {
+      order.actualAmount = 0;
+    } else {
+      order.actualAmount = Number(this.data.actualAmount);
+    }
     // 1待付款 2已完成
     if (order.actualAmount < order.orderAmount || order.orderAmount == 0) {
       order.status = 1;
@@ -305,6 +327,7 @@ Page({
             where: where
           }
         }).then(res => {
+          submit = true;
            // 保存订明细
           var menuList = that.data.listData;
           var orderDetailList = [];
@@ -346,8 +369,8 @@ Page({
         if (amountSum != null) {
           var orderAmtChange = Number(order.orderAmount) - Number(that.data.oldOrderAmount);
           var actualAmtChange = Number(order.actualAmount) - that.data.oldActualAmount;
-          amountSum.orderAmountSum = Number(amountSum.orderAmountSum) + orderAmtChange - actualAmtChange;
-          amountSum.actualAmountSum = Number(amountSum.actualAmountSum) + actualAmtChange;
+          amountSum.orderAmountSum = (Number(amountSum.orderAmountSum) + orderAmtChange - actualAmtChange).toFixed(2);
+          amountSum.actualAmountSum = (Number(amountSum.actualAmountSum) + actualAmtChange).toFixed(2);
           app.setCacheData("amountSum", amountSum);
         }
       }).catch(console.error)
@@ -374,5 +397,13 @@ Page({
     wx.navigateTo({
       url: '../person/person?from=orderAdd&date='+ this.data.date,
     })
-  }
+  },
+  /**
+  * 回到首页(分享的时候)
+  */
+  backHome: function () {
+    wx.reLaunch({
+      url: '/pages/index/index'
+    })
+  },
 })

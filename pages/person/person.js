@@ -33,22 +33,25 @@ Page({
   onLoad: function(options) {
     new app.DataListTemp();
     var that = this;
-
+    // 从开单页面跳转过来的from为orderAdd
     if (options.from != undefined) {
       this.setData({
         from: options.from,
         orderDate: options.date
       })
+      // 查询date当天的已有订单的师傅,做样式显灰
       this.getOrderPerson(options.date);
     } else {
       var personList = app.getCacheData("personList");
       if (personList != null) {
-        var dataList = this.formatList(personList, that.data.orderPersonList);
+         // 从缓存中取
+        var dataList = this.formatList(personList);
         this.setData({
           'sourceList': personList,
           'item.dataList': dataList
         })
       } else {
+        // 否则调用数据库
         this.getData();
       }
     }
@@ -134,9 +137,22 @@ Page({
   },
   formSubmit: function (e) {
     if (submit) {
+      wx.showLoading({
+        title: '数据保存中',
+      })
       submit = false;
       var that = this;
       var name = this.data.name;
+      if(name == '') {
+        submit = true;
+        wx.showToast({
+          title: '姓名不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
+
       var phone = this.data.phone;
       var letter = common.getFirstLetter(name);
       // 保存
@@ -157,12 +173,11 @@ Page({
           var sourceList = that.data.sourceList;
           sourceList.push(obj);
           var dataList = that.formatList(sourceList);
-          console.log(sourceList);
           that.setData({
             sourceList: sourceList,
             'item.dataList': dataList
           });
-
+          wx.hideLoading();
           wx.showToast({
             title: '添加成功',
             icon: 'success',
@@ -173,6 +188,7 @@ Page({
           submit = true;
         },
         fail: function (res) {
+          wx.hideLoading();
           wx.showToast({
             title: '添加失败',
             icon: 'none',
@@ -293,6 +309,13 @@ Page({
                 duration: 1000
               })
               app.setCacheData("personList", sourceList);
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '基础数据不能删除',
+                icon: 'none',
+                duration: 1000
+              })
             }
           })
         }
@@ -304,8 +327,21 @@ Page({
     if (submit) {
       submit = false;
       var that = this;
-      var _id = this.data.name._id;
+      var _id = this.data._id;
       var name = this.data.name;
+
+      if (name == '') {
+        submit = true;
+        wx.showToast({
+          title: '姓名不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
+      wx.showLoading({
+        title: '数据保存中',
+      })
       var phone = this.data.phone;
       var letter = common.getFirstLetter(name);
       var sourceList = this.data.sourceList;
@@ -313,8 +349,7 @@ Page({
         // data 字段表示需新增的 JSON 数据
         data: {
           name: name,
-          price: price,
-          unit: unit,
+          phone: phone,
           letter: letter
         },
         success: function (res) {
@@ -333,9 +368,9 @@ Page({
           }
           var dataList = that.formatList(sourceList);
           that.setData({
-            
             'item.dataList': dataList
           });
+          wx.hideLoading();
           wx.showToast({
             title: '修改成功',
             icon: 'success',
@@ -346,6 +381,7 @@ Page({
           submit = true;
         },
         fail: function (res) {
+          wx.hideLoading();
           wx.showToast({
             title: '添加成功',
             icon: 'none',

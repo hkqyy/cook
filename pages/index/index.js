@@ -82,10 +82,12 @@ Page({
             actualAmountSum = actualAmountSum + Number(order.actualAmount);
           }
           that.setData({
-            orderAmountSum: orderAmountSum,
-            actualAmountSum: actualAmountSum
+            orderAmountSum: orderAmountSum.toFixed(2),
+            actualAmountSum: actualAmountSum.toFixed(2)
           })
-          app.setCacheData("amountSum", { orderAmountSum: orderAmountSum, actualAmountSum: actualAmountSum });
+          app.setCacheData(
+            "amountSum", { orderAmountSum: orderAmountSum.toFixed(2), actualAmountSum: actualAmountSum.toFixed(2) }
+          );
         },
         fail: console.error
       })

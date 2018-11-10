@@ -1,4 +1,4 @@
-<scroll-view class="container-body" scroll-y="true">
+<scroll-view class="container-body" scroll-y="true" scroll-top='{{scrolltop}}'>
   <view class='new-add'>
     <view class='new-add-list'>
       <text>时间</text>
@@ -38,7 +38,7 @@
     </view>
     <view class='new-add-list' wx:if="{{item != ''}}">
       <text>收款金额</text>
-      <input type='number' data-name='actualAmount' maxlength='13' bindblur='inputChange' value="{{actualAmount}}" 
+      <input type='digit' data-name='actualAmount' maxlength='13' bindblur='inputChange' value="{{actualAmount}}" 
       placeholder='请输入收款金额'></input>
     </view>
     <view></view>
@@ -57,7 +57,7 @@
 
   <view class="table">
     <view class="tr bg-w">
-      <view class="th w7"></view>
+      <view class="th w7" wx:if="{{status == 1}}"></view>
       <view class="th w25"><text class='w100 ta-center'>名称</text></view>
       <view class="th w12"><text class='w100 ta-center'>单位</text></view>
       <view class="th w18"><text class='w100 ta-center'>单价</text></view>
@@ -67,7 +67,7 @@
     <block wx:for="{{listData}}" wx:key="this" wx:for-item="item">
         <view class="tr bg-g" wx:if="{{index % 2 == 0}}">
         <!-- 这里要用e.currentTarget才能获取到值是因为我们点击的是icon，但绑定事件是在父级view上 -->
-        <view data-index='{{index}}' class="td w7" bindtap='delete'>
+        <view data-index='{{index}}' class="td w7" bindtap='delete' wx:if="{{status == 1}}">
           <icon class='w100 ta-center' type="cancel" size="20"></icon>
         </view>
         <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
@@ -83,7 +83,7 @@
         <view class="td w20" selectable="true"><text class='w100 ta-center'>{{item.sum}}</text></view>
       </view>
       <view class="tr bg-g2" wx:else>
-        <view data-index="{{index}}" class="td w7" bindtap='delete'>
+        <view data-index="{{index}}" class="td w7" bindtap='delete' wx:if="{{status == 1}}">
           <icon class='w100 ta-center' type="cancel" size="20"></icon>
         </view>
         <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
@@ -114,6 +114,10 @@
       <view class='pay-btn' bindtap='showModal'>提交</view>
   </view>
 </view>
+
+<!-- 回到首页(分享的时候显示) -->
+<image wx:if="{{share}}" bindtap='backHome' class='d-back-home' src='./../../images/back_home.png' lazy-load></image>
+
 
  <!--弹窗-->
   <view class="modal-mask" bindtap="hideModal" wx:if="{{showModal}}"></view>

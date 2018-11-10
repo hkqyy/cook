@@ -3,7 +3,7 @@
       <view class="search-left">
           <image src="../../images/search.png"></image>
           <input placeholder-class="search-placeholder"
-            data-name='searchText' placeholder='请输入姓名或者手机号' bindblur='inputChange'/>
+            data-name='searchText' placeholder='请输入姓名或者手机号' bindinput='inputChange'/>
       </view>
       <view class="search-right" bindtap="search">
           <image src="../../images/lighting.png"></image>

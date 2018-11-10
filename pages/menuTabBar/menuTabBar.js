@@ -69,8 +69,20 @@ Page({
   formSubmit: function (e) {
     if (submit) {
       submit = false;
+      wx.showLoading({
+        title: '数据保存中',
+      })
       var that = this;
       var name = e.detail.value.name;
+      if (name == '') {
+        submit = true;
+        wx.showToast({
+          title: '名称不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
       var unit = e.detail.value.unit;
       var price = e.detail.value.price;
       var letter = common.getFirstLetter(name);
@@ -98,6 +110,7 @@ Page({
             sourceList: sourceList,
             'item.dataList': dataList
           });
+          wx.hideLoading();
           wx.showToast({
             title: '添加成功',
             icon: 'success',
@@ -191,6 +204,13 @@ Page({
                 duration: 1000
               })
               app.setCacheData("menuList", sourceList);
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '基础数据不能删除',
+                icon: 'none',
+                duration: 1000
+              })
             }
           })
         }
@@ -201,9 +221,21 @@ Page({
   edit: function (e) {
     if (submit) {
       submit = false;
+      wx.showLoading({
+        title: '数据保存中',
+      })
       var that = this;
       var _id = e.detail.value._id;
       var name = e.detail.value.name;
+      if (name == '') {
+        submit = true;
+        wx.showToast({
+          title: '名称不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
       var unit = e.detail.value.unit;
       var price = e.detail.value.price;
       var letter = common.getFirstLetter(name);
@@ -235,6 +267,7 @@ Page({
           that.setData({
             'item.dataList': dataList
           });
+          wx.hideLoading();
           wx.showToast({
             title: '修改成功',
             icon: 'success',

@@ -204,8 +204,8 @@ Page({
       var amountSum = app.getCacheData("amountSum");
       if (amountSum != null) {
         var actualAmtChange = Number(that.data.actualAmount) - Number(that.data.oldActualAmount);
-        amountSum.orderAmountSum = Number(amountSum.orderAmountSum) - actualAmtChange;
-        amountSum.actualAmountSum = Number(amountSum.actualAmountSum) + actualAmtChange;
+        amountSum.orderAmountSum = (Number(amountSum.orderAmountSum) - actualAmtChange).toFixed(2);
+        amountSum.actualAmountSum = (Number(amountSum.actualAmountSum) + actualAmtChange).toFixed(2);
         app.setCacheData("amountSum", amountSum);
       }
     })

@@ -63,8 +63,9 @@ let dataListTemp = {
         item.display = 'none';
         // 已经被选择的数据添加标识为S
         for (var j in selectDataList) {
-          if (item.name == selectDataList[i]) {
+          if (item.name == selectDataList[j]) {
             item.select = 'S';
+            break;
           }
         }
         jsonData[item.letter].push(item);

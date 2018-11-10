@@ -96,6 +96,15 @@ Page({
     if (submit) {
       submit = false;
       var name = this.data.name;
+      if (name == '') {
+        submit = true;
+        wx.showToast({
+          title: '名称不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
       var remark = this.data.remark;
       var letter = common.getFirstLetter(name);
       // 保存
@@ -107,6 +116,9 @@ Page({
       } else {
         this.add(name, remark, letter);
       }
+      setTimeout(function() {
+        wx.hideLoading();
+      }, 2000);
       
     }
   },
@@ -172,7 +184,6 @@ Page({
           duration: 500
         })
         submit = true;
-        wx.hideLoading();
         setTimeout(function() {
           wx.navigateBack();
         }, 500); 
@@ -262,7 +273,6 @@ Page({
           duration: 500
         })
         submit = true;
-        wx.hideLoading();
         setTimeout(function () {
           wx.navigateBack();
         }, 500);

@@ -80,8 +80,20 @@ Page({
   formSubmit: function (e) {
     if (submit) {
       submit = false;
+      wx.showLoading({
+        title: '数据保存中',
+      })
       var that = this;
       var name = e.detail.value.name;
+      if (name == '') {
+        submit = true;
+        wx.showToast({
+          title: '名称不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
       var unit = e.detail.value.unit;
       var price = e.detail.value.price;
 
@@ -109,6 +121,7 @@ Page({
             sourceList: sourceList,
             'item.dataList': dataList
           });
+          wx.hideLoading();
           wx.showToast({
             title: '添加成功',
             icon: 'success',
@@ -154,8 +167,8 @@ Page({
       var list = this.data.selectObjList;
       for (var i in list) {
         if (val.name == list[i].name) {
-          list[i].count = Number(list[i].count) + 1;
-          list[i].sum = Number(list[i].count) * Number(list[i].price);
+          list[i].count = list[i].count + 1;
+          list[i].sum = Number(list[i].count * list[i].price).toFixed(2);
           isExist = true;
           break;
         }
@@ -163,10 +176,8 @@ Page({
       if (isExist == false) {
         list.push(data);
       }
-      var orderAmount = Number(this.data.orderAmount) + Number(val.price);
       this.setData({
-        selectObjList: list,
-        orderAmount: orderAmount
+        selectObjList: list
       })
       
       wx.showToast({
@@ -190,8 +201,8 @@ Page({
       for (var j in list) {
         if (item.name == list[j].name) {
           var oldItem = list[j];
-          oldItem.count = Number(oldItem.count) + Number(item.count);
-          oldItem.sum = Number(oldItem.sum) + Number(item.sum);
+          oldItem.count = (Number(oldItem.count) + Number(item.count)).toFixed(2);
+          oldItem.sum = (Number(oldItem.sum) + Number(item.sum)).toFixed(2);
           isOld = true;
           break;
         }
@@ -202,10 +213,10 @@ Page({
       }
       orderAmount += Number(item.sum);
     }
-
     prevPage.setData({
       listData: list,
-      orderAmount: Number(prevPage.data.orderAmount) + orderAmount
+      orderAmount: (Number(prevPage.data.orderAmount) + Number(orderAmount)).toFixed(2),
+      scrolltop: list.length * 50
     });
     setTimeout(function () {
       wx.navigateBack();
@@ -286,7 +297,7 @@ Page({
     var list = this.data.selectObjList;
     var item = list[e.target.dataset.index];
     item.count = e.detail.value;
-    item.sum = Number((item.price * item.count).toFixed(2));
+    item.sum = (item.price * item.count).toFixed(2);
     this.setData({
       ["selectObjList[" + e.target.dataset.index + "]"]: item
     });
@@ -365,6 +376,13 @@ Page({
                 duration: 1000
               })
               app.setCacheData("menuList", sourceList);
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '基础数据不能删除',
+                icon: 'none',
+                duration: 1000
+              })
             }
           })
         }

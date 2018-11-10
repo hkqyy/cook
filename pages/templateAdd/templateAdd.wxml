@@ -34,11 +34,11 @@
         <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
         <view class="td w15" selectable="true"><text class='w100 ta-center'>{{item.unit}}</text></view>
         <view class="td w20" selectable="true">
-          <input type='number' maxlength='11' name='price' class='td-input'
+          <input type='digit' maxlength='11' name='price' class='td-input'
             data-id="{{index}}" value="{{item.price}}" bindblur='priceChange'></input>
         </view>
         <view class="td w20" selectable="true">
-          <input type='number' maxlength='11' name='count' class='td-input'
+          <input type='digit' maxlength='11' name='count' class='td-input'
             data-id="{{index}}" value="{{item.count}}" bindblur='cntChange'></input>
         </view>
       </view>
@@ -50,11 +50,11 @@
         <view class="td w25" selectable="true"><text class='w100 ta-center'>{{item.name}}</text></view>
         <view class="td w15" selectable="true"><text class='w100 ta-center'>{{item.unit}}</text></view>
         <view class="td w20" selectable="true">
-          <input type='number' maxlength='11' name='price' class='td-input'
+          <input type='digit' maxlength='11' name='price' class='td-input'
             data-id="{{index}}" value="{{item.price}}" bindblur='priceChange'></input>
         </view>
         <view class="td w20" selectable="true">
-          <input type='number' maxlength='11' name='count' class='td-input'
+          <input type='digit' maxlength='11' name='count' class='td-input'
             data-id="{{index}}" value="{{item.count}}" bindblur='cntChange'></input>
         </view>
       </view>

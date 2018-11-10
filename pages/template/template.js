@@ -95,15 +95,17 @@ Page({
               menu.price = item.price;
               menu.unit = item.unit;
               menu.count = item.count;
-              var sum = item.count * item.price;
+              var sum = Number(item.count * item.price).toFixed(2);
               menu.sum = sum;
               list.push(menu);
-              orderAmount = orderAmount + sum;
+              orderAmount = Number(orderAmount) + Number(sum);
             }
             prevPage.setData({
               listData: list,
-              orderAmount: orderAmount
+              orderAmount: orderAmount.toFixed(2),
+              scrolltop: list.length * 50
             });
+           
             wx.navigateBack();
             select = true;
             wx.hideLoading();
@@ -159,6 +161,13 @@ Page({
               wx.showToast({
                 title: '删除成功',
                 icon: 'success',
+                duration: 1000
+              })
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '基础数据不能删除',
+                icon: 'none',
                 duration: 1000
               })
             }
